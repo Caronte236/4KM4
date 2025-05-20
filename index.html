@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Te Amo - Lluvia Romántica</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrixCanvas"></canvas>
+
+  <script>
+    // 🎨 Obtenemos el canvas y el contexto 2D
+    const canvas = document.getElementById("matrixCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // 🖥️ Ajustamos el tamaño del canvas al de la ventana
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // 💌 OPCIÓN 1: palabra completa
+    const word = "4KM4";
+
+    // 💌 OPCIÓN 2: letras individuales
+    // const word = "TE AMO".split("");  // ["T", "E", " ", "A", "M", "O"]
+
+    const fontSize = 24;
+
+    // Si usas palabra completa, deja esta línea:
+    const columns = Math.floor(canvas.width / (fontSize * 4));
+
+    // Si usas letras individuales, comenta la línea de arriba y usa esta:
+    // const columns = Math.floor(canvas.width / fontSize);
+
+    // Cada columna tiene una gota (posición vertical)
+    const drops = Array(columns).fill(1);
+
+    function draw() {
+      // Fondo negro semitransparente para el efecto de estela
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Color rosado neón
+      ctx.fillStyle = "#ff66cc";
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        // OPCIÓN 1: usar palabra completa (no se elige al azar)
+        ctx.fillText(word, i * fontSize * 4, drops[i] * fontSize);
+
+        // OPCIÓN 2: elegir una letra aleatoria
+        // const letter = word[Math.floor(Math.random() * word.length)];
+        // ctx.fillText(letter, i * fontSize, drops[i] * fontSize);
+
+        // Reinicia columna con probabilidad aleatoria
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 50);
+  </script>
+</body>
+</html>
+
